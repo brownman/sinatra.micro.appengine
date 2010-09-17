@@ -3,6 +3,8 @@ require 'sinatra/base'
 
 # all application specific setup should go here
 require 'environment'
+require 'sessions-gae'
+require 'authentication-gae'
 
 class MyApp < Sinatra::Base
 
