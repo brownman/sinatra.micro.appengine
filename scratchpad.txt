@@ -14,3 +14,6 @@ load 'routes/route2.rb'
 
 # launch standard sinatra, without using ::Base
 run Sinatra::Application
+
+
+%link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}

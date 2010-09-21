@@ -8,3 +8,6 @@ gem 'appengine-rack', '0.0.11.pre'
 gem "dm-appengine"
 gem "sinatra"
 gem "haml"
+gem "dm-core"
+gem "dm-validations"
+gem "dm-timestamps"
