@@ -22,16 +22,16 @@ class MyApp < Sinatra::Base
     end
   end
   
-  get '/login' do
+  get '/signin' do
     bounce_if_authenticated
-    haml :login
+    haml :signin
   end
   
-  post '/login' do
+  post '/signin' do
     if authenticate(params[:email], params[:password])
       redirect '/'
     else
-      redirect_with_message '/login', 'Email or password wrong. Please try again'
+      redirect_with_message '/signin', 'Email or password wrong. Please try again'
     end
   end
   
@@ -51,7 +51,7 @@ class MyApp < Sinatra::Base
     redirect '/'
   end
   
-  get '/logout' do
+  get '/signout' do
     logout!
     redirect '/'
   end

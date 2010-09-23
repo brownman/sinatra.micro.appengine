@@ -1,10 +1,33 @@
 !!! 1.1
 %html{:xmlns => "http://www.w3.org/1999/xhtml"}
-  %head
-    %title= @title || SiteConfig.title
-    %link{:rel => 'stylesheet', :href => 'http://www.w3.org/StyleSheets/Core/Modernist', :type => 'text/css'}
-  %body
-    =yield
-    #footer
-      %p#legal= "&mdash; &copy; #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"
-      %p #{session[:account]}
+	%head
+		%title= @title || SiteConfig.name
+		%link{:href => '/global.css', :rel => 'stylesheet', :type => 'text/css'}
+	%body
+		#container
+			#top
+				#top-logo
+					#{SiteConfig.name}
+				#top-account 
+					- if session[:account]
+						%a{:href => '/signout'}signout
+					- if not session[:account]
+						%a{:href => '/signup'}signup
+						%a{:href => '/signin'}signin
+			#main
+				/ the real deal goes here...
+				=yield
+				#footer
+					%ul
+						%li
+							%a{:href => '/bla1'}Bla1
+						%li
+							%a{:href => '/bla1'}Bla1
+						%li
+							%a{:href => '/bla1'}Bla1
+						%li
+							%a{:href => '/bla1'}Bla1
+						%li
+							%a{:href => '/bla1'}Bla1
+					%span= "&copy; #{Time.now.strftime('%Y')} #{SiteConfig.company}"
+

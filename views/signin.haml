@@ -1,5 +1,5 @@
-#signup
-	%form#default-form{:action => '/signup', :method => 'post'}
+#signin
+	%form#default-form{:action => '/signin', :method => 'post'}
 		%fieldset
 			%label Email
 			%input{:class => 'text', :type => 'text', :name => 'email'}
@@ -7,11 +7,8 @@
 			%label Password
 			%input{:class => 'text', :type => 'password', :name => 'password'}
 			.clear
-			%label Confirm Password
-			%input{:class => 'text', :type => 'password', :name => 'password2'}
-			.clear
 			
 		%div{:class => 'right'}
 			%button.button{:type => 'submit'}
-				%span Sign up now
+				%span Sign in
 

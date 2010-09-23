@@ -17,3 +17,8 @@ run Sinatra::Application
 
 
 %link{:href => '/main.css', :rel => 'stylesheet', :type => 'text/css'}
+
+  =yield
+    #footer
+      %p#legal= "&mdash; &copy; #{Time.now.strftime('%Y')} #{SiteConfig.author} &mdash;"
+      %p #{session[:account]}

@@ -12,7 +12,8 @@ require 'models/account'
 
 # setup constants, etc
 SiteConfig = OpenStruct.new(
-  :title => 'Your Application Name',
+  :name => 'Your Application Name',
   :author => 'Your Name',
+  :company => 'Your Company',
   :url_base => 'http://localhost:8080/'
 )
