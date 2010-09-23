@@ -6,9 +6,14 @@ DataMapper.setup(:default, "appengine://auto")
 DataMapper.repository.adapter.singular_naming_convention!
 
 # setup constants, etc
-SiteConfig = OpenStruct.new(
-  :name => 'Your Application Name',
+Env = OpenStruct.new(
+  :app_name => 'Your Application Name',
   :author => 'Your Name',
   :company => 'Your Company',
-  :url_base => 'http://localhost:8080/'
+  :url_base => 'http://localhost:8080/',
+  :domain => 'foo.com',
+  :secret => 'change me',
+  # internal stuff
+  :session_key => 'ssid',
+  :session_timeout => 86400
 )

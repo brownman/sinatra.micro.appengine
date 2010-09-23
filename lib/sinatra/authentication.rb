@@ -20,52 +20,24 @@ module Sinatra
       
       def authenticate(email_or_username, password)
         if user = User.authenticate(email_or_username, password)
-          return @memcache.add( cookie('ssid'), user.id, 86400) # TODO expiration should be controlled
+          return @memcache.add( cookie( Env.session_key), user.id, Env.session_timeout)
         end
         return false
       end
       
       def authenticated?
-        return false unless @memcache.get( cookie('ssid'))
+        return false unless @memcache.get( cookie(Env.session_key))
         return true
       end
      
       def logout!
-        @memcache.delete( cookie('ssid'))
+        @memcache.delete( cookie(Env.session_key))
       end
          
     end
 
-    # A wrapper for the Rack::Session::Cookie middleware that allows an options
-    # hash to be returned from the block given to the +use+ statement instead
-    # of being provided up front.
-    module Cookie
-      def self.new(app, options={})
-        
-        options.merge!(yield) if block_given?
-        Rack::Session::Cookie.new(app, options)
-      end
-    end
-  
     def self.registered(app)
-      app.helpers Authentication::Helpers
-      
-      # Parameters for the session cookie.
-      app.set :session_name, 'ssid'
-      app.set :session_path, '/'
-      app.set :session_domain, nil
-      app.set :session_expire, 86400  #1 day?
-      app.set :session_secret, nil
-
-      app.use(Authentication::Cookie) do
-        { :key => app.session_name,
-          :path => app.session_path,
-          :domain => app.session_domain,
-          :expire_after => app.session_expire,
-          :secret => app.session_secret
-        }
-      end
-      
+      app.helpers Authentication::Helpers      
     end
     
   end # Authentication

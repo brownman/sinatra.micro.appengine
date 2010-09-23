@@ -1,13 +1,13 @@
 !!! 1.1
 %html{:xmlns => "http://www.w3.org/1999/xhtml"}
 	%head
-		%title= @title || SiteConfig.name
+		%title= Env.name
 		%link{:href => '/global.css', :rel => 'stylesheet', :type => 'text/css'}
 	%body
 		#container
 			#top
 				#top-logo
-					#{SiteConfig.name}
+					#{Env.app_name}
 				#top-account 
 					- if authenticated?
 						%a{:href => '/signout'}signout
@@ -29,7 +29,7 @@
 							%a{:href => '/bla1'}Bla1
 						%li
 							%a{:href => '/bla1'}Bla1
-					%span= "&copy; #{Time.now.strftime('%Y')} #{SiteConfig.company}"
+					%span= "&copy; #{Time.now.strftime('%Y')} #{Env.company}"
 				#debug
-					ssid #{cookie('ssid')}
+					ssid #{cookie(Env.session_key)}
 
