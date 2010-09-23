@@ -42,6 +42,10 @@ module Sinatra
       return false unless request.cookies[c]
       return true 
     end
+    
+    def hash_to_query_string(hash)
+      hash.collect {|k,v| "#{k}=#{v}"}.join('&')
+    end
   end
   
   helpers CommonHelper

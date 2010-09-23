@@ -20,7 +20,7 @@ module Sinatra
       
       def authenticate(email_or_username, password)
         if user = User.authenticate(email_or_username, password)
-          return @memcache.add( cookie('ssid'), user.id, 3600) # TODO expiration should be controlled
+          return @memcache.add( cookie('ssid'), user.id, 86400) # TODO expiration should be controlled
         end
         return false
       end
@@ -41,6 +41,7 @@ module Sinatra
     # of being provided up front.
     module Cookie
       def self.new(app, options={})
+        
         options.merge!(yield) if block_given?
         Rack::Session::Cookie.new(app, options)
       end
@@ -53,7 +54,7 @@ module Sinatra
       app.set :session_name, 'ssid'
       app.set :session_path, '/'
       app.set :session_domain, nil
-      app.set :session_expire, nil
+      app.set :session_expire, 86400  #1 day?
       app.set :session_secret, nil
 
       app.use(Authentication::Cookie) do

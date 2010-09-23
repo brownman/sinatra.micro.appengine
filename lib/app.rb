@@ -80,7 +80,7 @@ class MyApp < Sinatra::Base
   
   # general configuration, on spin-up
   configure do
-    # do something   
+    # do something
   end
   
   # specific routes for the production environment so that we do not reveal too much information about what went wrong...
