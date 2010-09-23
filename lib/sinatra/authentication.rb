@@ -1,6 +1,6 @@
 
 require 'sinatra/base'
-require 'sinatra/account'
+require 'sinatra/user'
 require 'appengine-apis/memcache'
 
 module Sinatra
@@ -19,19 +19,19 @@ module Sinatra
       end
       
       def authenticate(email_or_username, password)
-        if account = Account.authenticate(email_or_username, password)
-          return @memcache.add(cookie('ssid'), true, 3600) # TODO expiration should be controlled
+        if user = User.authenticate(email_or_username, password)
+          return @memcache.add( cookie('ssid'), user.id, 3600) # TODO expiration should be controlled
         end
         return false
       end
       
       def authenticated?
-        return false unless @memcache.get cookie('ssid')
+        return false unless @memcache.get( cookie('ssid'))
         return true
       end
      
       def logout!
-        @memcache.delete cookie('ssid')
+        @memcache.delete( cookie('ssid'))
       end
          
     end

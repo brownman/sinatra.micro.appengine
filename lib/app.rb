@@ -53,9 +53,9 @@ class MyApp < Sinatra::Base
   end
   
   post '/signup' do
-    account = Account.new(:email => params[:email], :username => params[:username], :password => params[:password], :password_confirmation => params[:password2])
-    if account.save
-      session[:account] = @account.id
+    user = User.new(:email => params[:email], :username => params[:username], :password => params[:password], :password_confirmation => params[:password2])
+    if user.save
+      authenticate user.email, params[:password]
     else
       redirect_with_message '/signup', 'Password does not match. Please try again'
     end
