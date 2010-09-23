@@ -1,6 +1,7 @@
 
 require 'sinatra/base'
 require 'sinatra/account'
+require 'appengine-apis/memcache'
 
 module Sinatra
 
@@ -8,7 +9,7 @@ module Sinatra
 
     # Request-level helper methods for Sinatra routes.
     module Helpers
-      
+         
       def bounce_if_authenticated
         redirect '/' if authenticated?
       end
@@ -19,21 +20,18 @@ module Sinatra
       
       def authenticate(email_or_username, password)
         if account = Account.authenticate(email_or_username, password)
-          session[:account] = account.id
-          return true
+          return @memcache.add(cookie('ssid'), true, 3600) # TODO expiration should be controlled
         end
         return false
       end
       
       def authenticated?
-        if session[:account]
-          return true
-        end
-        return false
+        return false unless @memcache.get cookie('ssid')
+        return true
       end
-
+     
       def logout!
-        session[:account] = nil
+        @memcache.delete cookie('ssid')
       end
          
     end
@@ -68,7 +66,8 @@ module Sinatra
       end
       
     end
-  end
+    
+  end # Authentication
 
   register Authentication
-end
+end 

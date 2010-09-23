@@ -9,9 +9,9 @@
 				#top-logo
 					#{SiteConfig.name}
 				#top-account 
-					- if session[:account]
+					- if authenticated?
 						%a{:href => '/signout'}signout
-					- if not session[:account]
+					- if not authenticated?
 						%a{:href => '/signup'}signup
 						%a{:href => '/signin'}signin
 			#main

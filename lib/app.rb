@@ -3,6 +3,7 @@ require 'sinatra/base'
 
 # external requirements
 require 'haml'
+require 'appengine-apis/memcache'
 
 # all application specific setup should go here
 require 'environment'
@@ -11,12 +12,14 @@ require 'sinatra/authentication'
 require 'sinatra/authorization'
 
 class MyApp < Sinatra::Base
+  
   helpers Sinatra::CommonHelper
   register Sinatra::Authentication
   register Sinatra::Authorization
-    
-  configure do
-    # do soemting here 
+  
+  def initialize(app=nil)
+    super(app)
+    @memcache = AppEngine::Memcache.new
   end
   
   get '/' do
@@ -50,8 +53,8 @@ class MyApp < Sinatra::Base
   end
   
   post '/signup' do
-    @account = Account.new(:email => params[:email], :username => params[:username], :password => params[:password], :password_confirmation => params[:password2])
-    if @account.save
+    account = Account.new(:email => params[:email], :username => params[:username], :password => params[:password], :password_confirmation => params[:password2])
+    if account.save
       session[:account] = @account.id
     else
       redirect_with_message '/signup', 'Password does not match. Please try again'
@@ -69,6 +72,15 @@ class MyApp < Sinatra::Base
     require_authentication
     
     haml :dashboard  
+  end
+  
+  before do
+    # do something
+  end
+  
+  # general configuration, on spin-up
+  configure do
+    # do something   
   end
   
   # specific routes for the production environment so that we do not reveal too much information about what went wrong...

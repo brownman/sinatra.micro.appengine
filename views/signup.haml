@@ -10,7 +10,8 @@
 			%label Confirm Password
 			%input{:class => 'text', :type => 'password', :name => 'password2'}
 			.clear
-			%input{:type => 'hidden', :name => 'next_url', :value => @next_location}
+			- if @next_url
+				%input{:type => 'hidden', :name => 'next_url', :value => @next_url}
 			
 		%div{:class => 'right'}
 			%button.button{:type => 'submit'}
