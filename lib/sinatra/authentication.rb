@@ -1,5 +1,6 @@
 
 require 'sinatra/base'
+require 'sinatra/account'
 
 module Sinatra
 
@@ -8,10 +9,14 @@ module Sinatra
     # Request-level helper methods for Sinatra routes.
     module Helpers
       
-      def require_login
-        redirect_with_message('/login', 'Please login first') unless session[:account]
+      def bounce_if_authenticated
+        redirect '/' if authenticated?
       end
-
+    
+      def require_authentication
+        redirect_with_location('/signin', request.fullpath) unless authenticated?
+      end
+      
       def authenticate(email_or_username, password)
         if account = Account.authenticate(email_or_username, password)
           session[:account] = account.id
