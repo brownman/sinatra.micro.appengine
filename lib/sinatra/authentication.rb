@@ -20,18 +20,18 @@ module Sinatra
       
       def authenticate(email_or_username, password)
         if user = User.authenticate(email_or_username, password)
-          return @memcache.add( cookie( Env.session_key), user.id, Env.session_timeout)
+          return memcache.add( cookie( Env.session_key), user.id, Env.session_timeout)
         end
         return false
       end
       
       def authenticated?
-        return false unless @memcache.get( cookie(Env.session_key))
+        return false unless memcache.get( cookie(Env.session_key))
         return true
       end
      
       def logout!
-        @memcache.delete( cookie(Env.session_key))
+        memcache.delete( cookie(Env.session_key))
       end
          
     end

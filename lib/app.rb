@@ -3,25 +3,25 @@ require 'sinatra/base'
 
 # external requirements
 require 'haml'
-require 'appengine-apis/memcache'
 
 # all application specific setup should go here
 require 'environment'
 require 'sinatra/common_helper'
+require 'sinatra/appengine_helper'
 require 'sinatra/authentication'
 require 'sinatra/authorization'
 
+
 class MyApp < Sinatra::Base
   
+  # some helpers
   helpers Sinatra::CommonHelper
+  helpers Sinatra::AppEngineHelper
+  
+  # a bunch of extensions
   register Sinatra::Authentication
   register Sinatra::Authorization
-  
-  def initialize(app=nil)
-    super(app)
-    @memcache = AppEngine::Memcache.new
-  end
-  
+    
   get '/' do
     if authenticated?
       haml :dashboard
