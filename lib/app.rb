@@ -49,12 +49,12 @@ class MyApp < Sinatra::Base
   configure :production do
     not_found do
       logger.warn "Route not found: " + request.fullpath
-      redirect '/', 404
+      redirect '/'
     end
 
     error do
       logger.error "Application-level exception: " + request.env['sinatra.error'].message
-      redirect '/', 500
+      redirect '/'
     end  
   end
   
