@@ -9,7 +9,7 @@ require 'environment'
 require 'sinatra/common_helper'
 require 'sinatra/appengine_helper'
 require 'sinatra/authentication'
-require 'sinatra/authorization'
+# require 'sinatra/authorization'
 
 
 class MyApp < Sinatra::Base
@@ -20,7 +20,7 @@ class MyApp < Sinatra::Base
   
   # a bunch of extensions
   register Sinatra::Authentication
-  register Sinatra::Authorization
+  # register Sinatra::Authorization
     
   get '/' do
     if authenticated?
@@ -30,6 +30,7 @@ class MyApp < Sinatra::Base
     end
   end
   
+=begin
   get '/signin' do
     bounce_if_authenticated
     
@@ -67,7 +68,8 @@ class MyApp < Sinatra::Base
     logout!
     redirect '/'
   end
-  
+=end
+
   get '/test' do
     require_authentication
     
