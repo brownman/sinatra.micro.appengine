@@ -45,15 +45,15 @@ class MyApp < Sinatra::Base
     # do something
   end
   
-  # specific routes for the production environment so that we do not reveal too much information about what went wrong...
+  # specific routes for the production environment so we do not reveal too much information about what went wrong...
   configure :production do
     not_found do
-      # TODO some loggin
+      logger.warn "Route not found: " + request.fullpath
       redirect '/', 404
     end
 
     error do
-      # TODO some loggin
+      logger.error "Application-level exception: " + request.env['sinatra.error'].message
       redirect '/', 500
     end  
   end

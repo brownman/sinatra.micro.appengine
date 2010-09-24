@@ -20,8 +20,10 @@ module Sinatra
       def authenticate(email_or_username, password)
         if user = User.authenticate(email_or_username, password)
           return memcache.add( cookie( Env.session_key), user.id, Env.session_timeout)
+        else
+          logger.warn "Unable to authenticate user: " + email_or_username + "@" + password
+          return false
         end
-        return false
       end
       
       def authenticated?
@@ -64,10 +66,10 @@ module Sinatra
         user = User.new(:email => params[:email], :username => params[:username], :password => params[:password], :password_confirmation => params[:password2])
         if user.save
           authenticate user.email, params[:password]
+          redirect '/'
         else
           redirect_with_message '/signup', 'Password does not match. Please try again'
         end
-        redirect '/'
       end
   
       app.get '/signout' do
