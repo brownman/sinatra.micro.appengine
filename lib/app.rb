@@ -29,46 +29,6 @@ class MyApp < Sinatra::Base
       haml :index
     end
   end
-  
-=begin
-  get '/signin' do
-    bounce_if_authenticated
-    
-    initialize_template
-    haml :signin
-  end
-  
-  post '/signin' do
-    if authenticate(params[:email], params[:password])
-      follow_url
-    else
-      redirect_with_message '/signin', 'Email or password wrong. Please try again'
-    end
-  end
-  
-  get '/signup' do
-    bounce_if_authenticated
-    
-    initialize_template
-    haml :signup
-  end
-  
-  post '/signup' do
-    user = User.new(:email => params[:email], :username => params[:username], :password => params[:password], :password_confirmation => params[:password2])
-    if user.save
-      authenticate user.email, params[:password]
-    else
-      redirect_with_message '/signup', 'Password does not match. Please try again'
-    end
-    
-    redirect '/'
-  end
-  
-  get '/signout' do
-    logout!
-    redirect '/'
-  end
-=end
 
   get '/test' do
     require_authentication

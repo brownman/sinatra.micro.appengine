@@ -75,8 +75,8 @@ module Sinatra
         redirect '/'
       end
         
-    end # register
-    
+    end
+        
   end # Authentication
 
   register Authentication
