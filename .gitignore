@@ -4,3 +4,8 @@ WEB-INF/lib/*
 WEB-INF/appengine-generated/*
 sandbox/**
 scratchpad.txt
+bin/css2sass
+bin/haml
+bin/html2haml
+bin/sass
+bin/sass-convert

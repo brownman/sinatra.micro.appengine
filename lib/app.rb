@@ -29,11 +29,11 @@ class MyApp < Sinatra::Base
       haml :index
     end
   end
-
-  get '/test' do
-    require_authentication
-    
-    haml :dashboard  
+  
+  get '/internal/1/keepalive' do
+    # does nothing, is just there to receive periodic requests from a cron job. 
+    # This way we always keep a 'warm' application instance, to avoid the long spin-up time 
+    # of the JRuby environment 
   end
   
   before do

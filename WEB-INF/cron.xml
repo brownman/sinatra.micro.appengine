@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+
+	<cron>
+		<url>/internal/1/keepalive</url>
+		<description>Ping the app to keep it alive</description>
+		<schedule>every 1 minutes</schedule>
+	</cron>
+	
+</cronentries>
