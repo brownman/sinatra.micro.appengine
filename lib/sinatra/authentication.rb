@@ -19,7 +19,7 @@ module Sinatra
       
       def authenticate(email_or_username, password)
         if user = User.authenticate(email_or_username, password)
-          return memcache.add( cookie( Env.session_key), user.id, Env.session_timeout)
+        	return memcache.add( session_id, user.id, Env.session_timeout)
         else
           logger.warn "Unable to authenticate user: " + email_or_username + "@" + password
           return false
@@ -27,14 +27,21 @@ module Sinatra
       end
       
       def authenticated?
-        return false unless memcache.get( cookie(Env.session_key))
+        return false unless memcache.get( session_id)
         return true
       end
      
       def logout!
-        memcache.delete( cookie(Env.session_key))
+        memcache.delete( session_id)
       end
-         
+      
+      def current_user
+      	User.current_user( user_id) 
+      end
+      
+      def user_id
+      	memcache.get( session_id)
+      end
     end
 
     def self.registered(app)

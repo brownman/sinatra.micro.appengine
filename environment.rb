@@ -11,9 +11,5 @@ Env = OpenStruct.new(
   :author => 'Your Name',
   :company => 'Your Company',
   :url_base => 'http://localhost:8080/',
-  :domain => 'foo.com',
-  :secret => 'change me',
-  # internal stuff
-  :session_key => 'ssid',
-  :session_timeout => 86400
+  :domain => 'foo.com'
 )

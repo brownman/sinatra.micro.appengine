@@ -1,6 +1,7 @@
 
 require 'sinatra/base'
 require 'base64'
+require 'digest/md5'
 
 module Sinatra
   
@@ -32,6 +33,7 @@ module Sinatra
     
     def set_cookie(c, v)
       response.set_cookie(c,v)
+      v
     end
     
     def cookie(c)
@@ -41,6 +43,23 @@ module Sinatra
     def cookie?(c)
       return false unless request.cookies[c]
       return true 
+    end
+    
+    def session_id
+    	if not cookie? 'sid'
+    		sid = unique_session_id
+    		set_cookie 'sid', sid
+    	else
+    		cookie 'sid'
+    	end
+    end
+    
+    def session_id?
+    	cookie? 'sid'
+    end
+    
+    def unique_session_id
+    	Digest::MD5.hexdigest( request.ip.to_s + Time.now.to_s + "bsdgfdg")
     end
     
     def hash_to_query_string(hash)
