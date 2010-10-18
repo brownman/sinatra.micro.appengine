@@ -19,7 +19,7 @@ module Sinatra
       
       def authenticate(email_or_username, password)
         if user = User.authenticate(email_or_username, password)
-        	return memcache.add( session_id, user.id, Env.session_timeout)
+        	return memcache.add( session_id, user.id, 86400)
         else
           logger.warn "Unable to authenticate user: " + email_or_username + "@" + password
           return false
