@@ -2,6 +2,8 @@
 require 'sinatra/base'
 require 'sinatra/user'
 require 'appengine-apis/memcache'
+require 'appengine-apis/urlfetch'
+require 'json'
 
 module Sinatra
 
@@ -84,6 +86,72 @@ module Sinatra
         redirect '/'
       end
         
+      # facebook oauth callback
+      app.get '/oauth/facebook/callback' do
+        
+        if !(params[:code] == nil)
+          # exchange the code for an oauth access token
+          response = AppEngine::URLFetch.fetch fb_token_exchange_url params[:code]
+          
+          # check the response status & content
+          if response.code == '200'
+            # extract the access_token
+            p = query_string_to_hash("&" + response.body)
+            
+            if !(p['access_token'] == nil)
+              access_token = p['access_token']
+              
+              # we have a valid oauth access_token now, get some basic user data, e.g. name and email next
+              response = AppEngine::URLFetch.fetch fb_user_url access_token
+              
+              if response.code == '200'
+                # finally we have all the information we needed. Now let's authenticate the user within this web app
+                user_data = JSON.parse(response.body)
+                
+                # extract the basic data we need
+                ext_id = user_data['id']
+                email = user_data['email']
+                first_name = user_data['first_name']
+                last_name = user_data['last_name']
+                full_name = user_data['name']
+                
+                # check if the user already exists
+                user = User.exists? email
+                if user == nil
+                  # new user, create a record now
+                  user = User.new(:ext_id => ext_id, :access_token1 => access_token, :account_type => 'facebook', :email => email, :full_name => full_name, :first_name => first_name, :last_name => last_name, :password => email, :password_confirmation => email)
+                  if user.save
+                    logger.info 'Created a new user based on Facebook data. Id=' + user.id.to_s
+                    authenticate user.email, user.email
+                  end
+                else
+                  logger.info 'Returning user authenticated by Facebook. Id=' + user.id.to_s
+                  authenticate user.email, user.email
+                end
+                
+                follow_url
+                
+              else
+                logger.warn 'Facebook API did not reply with user data. Code=' + response.code
+                logger.warn response.body
+              end
+              
+            else
+              logger.warn 'Facebook API did not reply with an access token.'
+              logger.warn response.body
+            end
+          else
+            logger.warn 'Facebook API did not reply with an access token. Code=' + response.code
+            logger.warn response.body
+          end
+        else
+          logger.warn 'Facebook API did not reply with an access code'
+        end
+        
+        follow_url
+        
+      end
+      
     end
         
   end # Authentication

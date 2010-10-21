@@ -65,6 +65,10 @@ module Sinatra
     def hash_to_query_string(hash)
       hash.collect {|k,v| "#{k}=#{v}"}.join('&')
     end
+    
+    def query_string_to_hash(q)
+      Hash[q.split("&").collect{|a| a.split("=")}]
+    end
   end
   
   helpers CommonHelper

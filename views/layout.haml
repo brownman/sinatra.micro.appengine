@@ -20,16 +20,13 @@
 				#footer
 					%ul
 						%li
-							%a{:href => '/bla1'}Bla1
+							%a{:href => '/'}Bla1
 						%li
-							%a{:href => '/bla1'}Bla1
+							%a{:href => '/'}Bla1
 						%li
-							%a{:href => '/bla1'}Bla1
+							%a{:href => '/'}Bla1
 						%li
-							%a{:href => '/bla1'}Bla1
+							%a{:href => '/'}Bla1
 						%li
-							%a{:href => '/bla1'}Bla1
-					%span= "&copy; #{Time.now.strftime('%Y')} #{Env.company}"
-				#debug
-					ssid #{cookie(Env.session_key)}
-
+							%a{:href => '/'}Bla1
+					%span= "debug{#{ session_id}, #{user_id}} &copy; #{Time.now.strftime('%Y')} #{Env.company}"

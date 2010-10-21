@@ -8,19 +8,18 @@ require 'haml'
 require 'environment'
 require 'sinatra/common_helper'
 require 'sinatra/appengine_helper'
+require 'sinatra/facebook_helper'
 require 'sinatra/authentication'
-# require 'sinatra/authorization'
-
 
 class MyApp < Sinatra::Base
   
   # some helpers
   helpers Sinatra::CommonHelper
   helpers Sinatra::AppEngineHelper
-  
-  # a bunch of extensions
+  helpers Sinatra::FacebookHelper
+   
+  # my set of extensions
   register Sinatra::Authentication
-  # register Sinatra::Authorization
     
   get '/' do
     if authenticated?
@@ -34,6 +33,10 @@ class MyApp < Sinatra::Base
     # does nothing, is just there to receive periodic requests from a cron job. 
     # This way we always keep a 'warm' application instance, to avoid the long spin-up time 
     # of the JRuby environment 
+  end
+  
+  get '/fb' do
+    redirect fb_authentication_url
   end
   
   before do
